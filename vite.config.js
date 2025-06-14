@@ -8,4 +8,5 @@ export default defineConfig({
       include: ["**/*.res.mjs"],
     }),
   ],
+  base: "/replaice"
 });

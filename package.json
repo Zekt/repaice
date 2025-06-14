@@ -1,5 +1,6 @@
 {
   "name": "replaice",
+  "homepage": "https://Zekt.github.io/replaice",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,6 +15,7 @@
   "dependencies": {
     "@rescript/core": "^1.6.1",
     "@rescript/react": "^0.12.1",
+    "gh-pages": "^6.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rescript": "^11.1.4",
