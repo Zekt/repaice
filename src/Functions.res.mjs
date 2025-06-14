@@ -4,37 +4,55 @@ import * as Js_array from "rescript/lib/es6/js_array.js";
 import * as Js_option from "rescript/lib/es6/js_option.js";
 import * as Js_string from "rescript/lib/es6/js_string.js";
 
+function showMedia(media) {
+  if (media === "Video") {
+    return "Video";
+  } else if (media === "Image") {
+    return "Image";
+  } else if (media === "Movie") {
+    return "Movie";
+  } else if (media === "Music") {
+    return "Music";
+  } else if (media === "Book") {
+    return "Book";
+  } else if (media === "Text") {
+    return "Text";
+  } else if (media === "Audio") {
+    return "Audio";
+  } else {
+    return "Drawing";
+  }
+}
+
 function mediaFmt(media) {
-  switch (media) {
-    case "Video" :
-        return [
-                "mp4",
-                "avi",
-                "mov",
-                "mkv"
-              ];
-    case "Audio" :
-        return [
-                "mp3",
-                "wav",
-                "flac",
-                "aac"
-              ];
-    case "Image" :
-        return [
-                "jpg",
-                "png",
-                "gif"
-              ];
-    case "Text" :
-        return [
-                "txt",
-                "doc",
-                "pdf",
-                "md",
-                "epub"
-              ];
-    
+  if (media === "Image") {
+    return [
+            "jpg",
+            "png",
+            "gif"
+          ];
+  } else if (media === "Text") {
+    return [
+            "txt",
+            "doc",
+            "pdf",
+            "md",
+            "epub"
+          ];
+  } else if (media === "Audio") {
+    return [
+            "mp3",
+            "wav",
+            "flac",
+            "aac"
+          ];
+  } else {
+    return [
+            "mp4",
+            "avi",
+            "mov",
+            "mkv"
+          ];
   }
 }
 
@@ -49,55 +67,52 @@ function mediaClassify(media) {
                       return Js_string.includes(url, param);
                     }), arr));
   };
-  switch (media) {
-    case "Video" :
-        return function (url) {
-          if (isSuffix(url, "Video")) {
-            return true;
-          } else {
-            return includKey(url, [
-                        "youtube.com",
-                        "vimeo.com"
-                      ]);
-          }
-        };
-    case "Audio" :
-        return function (url) {
-          if (isSuffix(url, "Audio")) {
-            return true;
-          } else {
-            return includKey(url, [
-                        "youtube.com",
-                        "spotify.com",
-                        "soundcloud.com"
-                      ]);
-          }
-        };
-    case "Image" :
-        return function (url) {
-          if (isSuffix(url, "Image")) {
-            return true;
-          } else {
-            return includKey(url, [
-                        "imgur.com",
-                        "flickr.com"
-                      ]);
-          }
-        };
-    case "Text" :
-        return function (url) {
-          if (isSuffix(url, "Text")) {
-            return true;
-          } else {
-            return includKey(url, [
-                        "medium.com",
-                        "wikipedia.org",
-                        "libgen.is",
-                        "sci-hub"
-                      ]);
-          }
-        };
-    
+  if (media === "Image") {
+    return function (url) {
+      if (isSuffix(url, "Image")) {
+        return true;
+      } else {
+        return includKey(url, [
+                    "imgur.com",
+                    "flickr.com"
+                  ]);
+      }
+    };
+  } else if (media === "Text") {
+    return function (url) {
+      if (isSuffix(url, "Text")) {
+        return true;
+      } else {
+        return includKey(url, [
+                    "medium.com",
+                    "wikipedia.org",
+                    "libgen.is",
+                    "sci-hub"
+                  ]);
+      }
+    };
+  } else if (media === "Audio") {
+    return function (url) {
+      if (isSuffix(url, "Audio")) {
+        return true;
+      } else {
+        return includKey(url, [
+                    "spotify.com",
+                    "soundcloud.com"
+                  ]);
+      }
+    };
+  } else {
+    return function (url) {
+      if (isSuffix(url, "Video")) {
+        return true;
+      } else {
+        return includKey(url, [
+                    "youtube.com",
+                    "vimeo.com"
+                  ]);
+      }
+    };
   }
 }
 
@@ -108,12 +123,17 @@ function classify(url) {
     "Image",
     "Text"
   ];
-  return Js_array.filter((function (media) {
-                return mediaClassify(media)(url);
-              }), mediaTypes);
+  var medias = Js_array.filter((function (media) {
+          return mediaClassify(media)(url);
+        }), mediaTypes);
+  if (medias.length > 0) {
+    return medias;
+  }
+  
 }
 
 export {
+  showMedia ,
   mediaFmt ,
   mediaClassify ,
   classify ,

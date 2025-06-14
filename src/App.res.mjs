@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as Functions from "./Functions.res.mjs";
+import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as JsxRuntime from "react/jsx-runtime";
 
 import './App.css'
@@ -9,25 +10,55 @@ import './App.css'
 
 function App(props) {
   var match = React.useState(function () {
-        return 0;
-      });
-  var setCount = match[1];
-  var match$1 = React.useState(function () {
         return "";
       });
-  var setText = match$1[1];
-  var text = match$1[0];
-  var clicked = function (param) {
-    console.log("Button clicked!");
-    setCount(function (count) {
-          return count + 1 | 0;
-        });
-    var match = Functions.classify(text);
-    if (match.length !== 0) {
-      console.log("Media types found for the URL.");
-    } else {
-      console.log("No media types found for the URL.");
+  var setURL = match[1];
+  var url = match[0];
+  var match$1 = React.useState(function () {
+        
+      });
+  var setMedia = match$1[1];
+  var media = match$1[0];
+  var match$2 = React.useState(function () {
+        return "";
+      });
+  var setAction = match$2[1];
+  var action = match$2[0];
+  var actions = [
+    "Drink a coffee",
+    "Take a nap",
+    "Take a walk",
+    "Touch grass"
+  ];
+  var actionButtons = Belt_Array.map(actions, (function (action) {
+          return JsxRuntime.jsx("button", {
+                      children: action,
+                      className: "mt-3 p-2 bg-blue-500 text-white rounded mr-2",
+                      type: "",
+                      onClick: (function (param) {
+                          setAction(function (param) {
+                                return action;
+                              });
+                          console.log("Action performed: " + action);
+                        })
+                    });
+        }));
+  var onClicked = function (param) {
+    var arr = Functions.classify(url);
+    if (arr !== undefined) {
+      var arr$1 = arr.map(Functions.showMedia);
+      var medias = Belt_Array.joinWith(arr$1, ", ", (function (m) {
+              return m;
+            }));
+      console.log("Media types found for the URL:" + medias);
+      return setMedia(function (param) {
+                  return arr[0];
+                });
     }
+    console.log("No media types found for the URL.");
+    setMedia(function (param) {
+          
+        });
   };
   return JsxRuntime.jsxs("div", {
               children: [
@@ -48,7 +79,7 @@ function App(props) {
                               children: [
                                 JsxRuntime.jsxs("label", {
                                       children: [
-                                        "Choose a media you want our AI to consume for you:",
+                                        "Choose an online media you want our AI to consume for you:",
                                         JsxRuntime.jsx("input", {
                                               className: "mt-2 p-2 border rounded",
                                               id: "uploaded_content",
@@ -62,22 +93,60 @@ function App(props) {
                                                   }
                                                   $$event.preventDefault();
                                                   console.log("URL submitted by Enter.");
-                                                  clicked($$event.target.value);
+                                                  onClicked($$event.target.value);
                                                 }),
                                               onChange: (function ($$event) {
-                                                  setText($$event.target.value);
+                                                  setURL($$event.target.value);
                                                 })
                                             })
                                       ]
                                     }),
                                 JsxRuntime.jsx("button", {
                                       children: "Upload",
-                                      className: "mt-3 p-2 bg-blue-500 text-white rounded",
+                                      className: "mt-1 p-2 bg-blue-500 text-white rounded",
                                       type: "",
-                                      onClick: clicked
+                                      onClick: (function (e) {
+                                          e.preventDefault();
+                                          onClicked(e);
+                                        })
                                     }),
-                                "count is " + match[0].toString()
+                                JsxRuntime.jsx("div", {
+                                      children: "Congrats! Our AI has " + (
+                                        media !== undefined ? (
+                                            media === "Image" ? "viewed it for you. Who kind of werido look at pictures? It's probably AI-generated anyway. Proudly tell people you have seem this picture since your AI agent has viewed it!" : (
+                                                media === "Text" ? "read it for you. Who read articles nowadays? Or even worse...books! What a bunch of nerds! Proudly tell people your AI agent has read it so you don't have to!" : (
+                                                    media === "Audio" ? "listened to it for you. Why listen to it yourself anyway? Tell people your AI agent has listened to it for you!" : "watched it for you. Why watch it yourself when you can watch AI-dubbed 5 minute cut on Youtube or TikTok? Now you don't even need those fakers anymore. Proudly tell people your AI agent has watched it so you don't have to!"
+                                                  )
+                                              )
+                                          ) : "not distinguished the format of your chosen media. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
+                                      ) + " Enjoy your life without it!",
+                                      className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
+                                      hidden: media === undefined
+                                    }),
+                                JsxRuntime.jsx("div", {
+                                      className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
+                                      hidden: media !== undefined
+                                    })
                               ]
+                            })
+                      ],
+                      className: "mt-5"
+                    }),
+                JsxRuntime.jsxs("div", {
+                      children: [
+                        JsxRuntime.jsx("h3", {
+                              children: "What else do you want it to do?",
+                              className: "text-xl font-semibold"
+                            }),
+                        actionButtons,
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                "Congrats! Our AI has performed the action in place of you: " + action,
+                                JsxRuntime.jsx("br", {}),
+                                "You don't have to do that anymore, enjoy doing nothing!"
+                              ],
+                              className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
+                              hidden: action === ""
                             })
                       ],
                       className: "mt-5"
