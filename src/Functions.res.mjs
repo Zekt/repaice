@@ -60,9 +60,11 @@ function mediaClassify(media, url) {
     return false;
   }
   var isSuffix = function (url, fmt) {
-    return Js_array.some((function (param) {
-                  return Js_string.endsWith(url, param);
-                }), mediaFmt(fmt));
+    return Js_array.some((function (i) {
+                  return i === true;
+                }), mediaFmt(fmt).map(function (key) {
+                    return Js_string.endsWith(key, url);
+                  }));
   };
   var includKey = function (url, arr) {
     return Js_array.some((function (i) {

@@ -25,9 +25,8 @@ let mediaFmt = (media: lower_media): array<string> => {
 
 let mediaClassify = (media: lower_media, url: string): bool => {
     if url != "" {
-      let isSuffix  = (url, fmt) => Js.Array.some((url->Js.String.endsWith), mediaFmt(fmt))
+      let isSuffix  = (url, fmt) => Js.Array.some((i) => i == true, mediaFmt(fmt)->Array.map((key) => Js.String.endsWith(key, url)))
       let includKey = (url, arr) => Js.Array.some((i) => i == true, arr->Array.map((key) => Js.String.includes(url, key)))
-      // let includKey = (url, arr) => Js.Option.isSome(Js.Array.find((url->Js.String.includes), arr))
       switch media {
       | #Video => isSuffix(url, #Video) || includKey(url, ["youtube.com", "vimeo.com"])
       | #Audio => isSuffix(url, #Audio) || includKey(url, ["spotify.com", "soundcloud.com"])

@@ -32,7 +32,11 @@ function App(props) {
     "Drink a coffee",
     "Take a nap",
     "Take a walk",
-    "Touch grass"
+    "Touch grass",
+    "Take a pee",
+    "Do 50 push-ups",
+    "Sing a song (privately)",
+    "Dance like nobody's watching (privately)"
   ];
   var actionButtons = Belt_Array.map(actions, (function (action) {
           return JsxRuntime.jsx("button", {
@@ -75,8 +79,14 @@ function App(props) {
                       children: "AI Will Do It For You",
                       className: "text-3xl font-semibold"
                     }),
-                JsxRuntime.jsx("p", {
-                      children: "Our AI the pinnacle of Intelligence.\nIt replace what a human does -\nit reads, it watch movies, it listen to music."
+                JsxRuntime.jsxs("p", {
+                      children: [
+                        "You have stumbled upon the most omnipotent AI, the pinnacle of Intelligence.",
+                        JsxRuntime.jsx("br", {}),
+                        "It replace human - all of human, especially you. It reads, it watch movies, it listen to music, it even do push-ups (privately).",
+                        JsxRuntime.jsx("br", {}),
+                        "For the purpose of warning humanity and showcasing its power, the AI presents you a chance to ask whatever you want it to do for you."
+                      ]
                     }),
                 JsxRuntime.jsxs("div", {
                       children: [
@@ -105,6 +115,9 @@ function App(props) {
                                                   onClicked($$event.target.value);
                                                 }),
                                               onChange: (function ($$event) {
+                                                  setTrigger(function (param) {
+                                                        return false;
+                                                      });
                                                   setURL($$event.target.value);
                                                 })
                                             })
@@ -119,16 +132,20 @@ function App(props) {
                                           onClicked(url);
                                         })
                                     }),
-                                JsxRuntime.jsx("div", {
-                                      children: url !== "" ? "Congrats! Our AI has " + (
+                                JsxRuntime.jsxs("div", {
+                                      children: [
+                                        "Congrats! Our AI has " + (
                                           media !== undefined ? (
-                                              media === "Image" ? "viewed the image for you. What kind of werido look at pictures? It's probably AI-generated anyways. Proudly tell people you have appreciated this picture/drawing since your AI agent has viewed it for you!" : (
-                                                  media === "Text" ? "read the text for you. Who read articles nowadays? Or even worse...books! What a bunch of nerds! Proudly tell people your AI agent has read it so you don't have to!" : (
-                                                      media === "Audio" ? "listened to the audio for you. Why listen to it yourself anyway? Tell people your AI agent has listened to it so you don't have to!" : "watched the video for you. Why watch a video or a movie when you can watch an AI-dubbed 1 minute cut on Youtube or TikTok? Why watch those slops when AI can watch it for you? Proudly tell people your AI agent has watched it so you don't have to!"
+                                              media === "Image" ? "viewed the image for you. What kind of weridos look at pictures? Proudly tell people you have appreciated this picture/drawing since your AI agent has viewed it for you!" : (
+                                                  media === "Text" ? "read the text for you. Who read articles or books? What a bunch of nerds! Proudly tell your friends your AI agent has read it so you don't have to!" : (
+                                                      media === "Audio" ? "listened to the audio for you. Why listen to it yourself anyway? Tell your friends your AI agent has listened to it so you don't have to!" : "watched the video for you. Proudly tell your friends your AI agent has watched it so you don't have to!"
                                                     )
                                                 )
-                                            ) : "not been able to describe the format of your chosen media in a language you can understand. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
-                                        ) + " Enjoy your life without it!" : "Please enter a URL to upload media.",
+                                            ) : "not been able to determine the format of your media in a language you can understand, it nonetheless consumed it in a way you beyond your comprehension.\nYou don't have to engage with this piece of media anymore."
+                                        ) + " Enjoy your life without it!",
+                                        JsxRuntime.jsx("br", {}),
+                                        "Don't forget: AI has done it for you, you should not wasting your time doing it yourself!"
+                                      ],
                                       className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
                                       hidden: match$1[0] === false && media === undefined
                                     })
@@ -140,7 +157,7 @@ function App(props) {
                 JsxRuntime.jsxs("div", {
                       children: [
                         JsxRuntime.jsx("h3", {
-                              children: "What else do you want it to do?",
+                              children: "What else do you want AI to do?",
                               className: "text-xl font-semibold"
                             }),
                         actionButtons,

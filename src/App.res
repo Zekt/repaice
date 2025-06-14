@@ -9,7 +9,11 @@ let make = () => {
     "Drink a coffee",
     "Take a nap",
     "Take a walk",
-    "Touch grass"
+    "Touch grass",
+    "Take a pee",
+    "Do 50 push-ups",
+    "Sing a song",
+    "Dance like nobody's watching"
   ]
   let actionButtons = React.array(Belt.Array.map(actions, action =>
     <button
@@ -29,16 +33,17 @@ let make = () => {
     | []  => Js.log("No media types found for the URL.")
              setMedia(_ => None)
     | arr => let medias = mToString(Array.map(arr, Functions.showMedia))
-                 Js.log("Media types found for the URL:" ++ medias)
-                 setMedia(_ => arr[0])
+             Js.log("Media types found for the URL:" ++ medias)
+             setMedia(_ => arr[0])
     }
     setTrigger(_ => true)
-    Js.log("Triggered!")
   })
 
   <div className="p-6">
     <h1 className="text-3xl font-semibold"> {"AI Will Do It For You"->React.string} </h1>
-    <p> {React.string("Our AI the pinnacle of Intelligence.\nIt replace what a human does -\nit reads, it watch movies, it listen to music.")} </p>
+    <p> {React.string("You have stumbled upon the most omnipotent AI, the pinnacle of Intelligence.")}
+        <br/> {React.string("Unlike other defectives, This AI has replaced human - all of human, especially you. It reads, it watch movies, it listen to music, it even do push-ups (privately).")}
+        <br/> {React.string("For the purpose of warning humanity and showcasing its power, the AI presents you a chance to ask whatever you want it to do for you.")} </p>
     <div className="mt-5">
       <h3 className="text-xl font-semibold"> {React.string("What media do you want it to consume?")} </h3>
       <form>
@@ -51,8 +56,10 @@ let make = () => {
             type_="url"
             placeholder="Enter a URL"
             className="mt-2 p-2 border rounded"
-            onChange={event =>
+            onChange={event => {
+              setTrigger(_ => false) // Reset trigger when URL changes
               setURL(JsxEvent.Form.target(event)["value"])
+              }
             }
             onKeyDown={event =>
               switch event->ReactEvent.Keyboard.key {
@@ -76,25 +83,21 @@ let make = () => {
           {React.string("Upload")}
         </button>
         <div hidden={trigger == false && media == None ? true : false} className="mt-1 p-2 bg-green-100 text-green-800 rounded">
-          {url != "" ? React.string("Congrats! Our AI has "
-                                    ++ {switch media {
-                                     | Some(#Video) => "watched the video for you. Why watch a video or a movie when you can watch an AI-dubbed 1 minute cut on Youtube or TikTok? Why watch those slops when AI can watch it for you? Proudly tell people your AI agent has watched it so you don't have to!"
-                                     | Some(#Audio) => "listened to the audio for you. Why listen to it yourself anyway? Tell people your AI agent has listened to it so you don't have to!"
-                                     | Some(#Text)  => "read the text for you. Who read articles nowadays? Or even worse...books! What a bunch of nerds! Proudly tell people your AI agent has read it so you don't have to!"
-                                     | Some(#Image) => "viewed the image for you. What kind of werido look at pictures? It's probably AI-generated anyways. Proudly tell people you have appreciated this picture/drawing since your AI agent has viewed it for you!"
-                                     | None => "not been able to describe the format of your chosen media in a language you can understand. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
-                                    }}
-                                    ++ " Enjoy your life without it!")
-                                    : React.string("Please enter a URL to upload media.")}
+          {React.string("Congrats! Our AI has "
+           ++ {switch media {
+            | Some(#Video) => "watched the video for you. Proudly tell your friends your AI agent has watched it so you don't have to!"
+            | Some(#Audio) => "listened to the audio for you. Why listen to it yourself anyway? Tell your friends your AI agent has listened to it so you don't have to!"
+            | Some(#Text)  => "read the text for you. Who read articles or books? What a bunch of nerds! Proudly tell your friends your AI agent has read it so you don't have to!"
+            | Some(#Image) => "viewed the image for you. What kind of weridos look at pictures? Proudly tell people you have appreciated this picture/drawing since your AI agent has viewed it for you!"
+            | None => "not been able to determine the format of your media in a language you can understand, it nonetheless consumed it in a way you beyond your comprehension.\nYou don't have to engage with this piece of media anymore."
+           }}
+           ++ " Enjoy your life without it!")}
+           <br/> {React.string("Don't forget: AI has done it for you, you should not wasting your time doing it yourself!")}
         </div>
-//         <div hidden={trigger == false || media != None ? true : false} className="mt-1 p-2 bg-green-100 text-green-800 rounded">
-//           {React.string("Our AI cannot describe the format of your chosen media in a language you can understand. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
-// )}
-//         </div>
       </form>
     </div>
     <div className="mt-5">
-      <h3 className="text-xl font-semibold"> {React.string("What else do you want it to do?")} </h3>
+      <h3 className="text-xl font-semibold"> {React.string("What else do you want AI to do?")} </h3>
        {actionButtons}
        <div hidden={action == "" ? true : false} className="mt-1 p-2 bg-green-100 text-green-800 rounded">
         {React.string("Congrats! Our AI has performed the action in place of you: " ++ action)} <br/>
