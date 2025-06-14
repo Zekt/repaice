@@ -34,9 +34,9 @@ function App(props) {
     "Take a walk",
     "Touch grass",
     "Take a pee",
-    "Do 50 push-ups",
-    "Sing a song (privately)",
-    "Dance like nobody's watching (privately)"
+    "Engage thought crimes",
+    "Sing a song",
+    "Dance like nobody's watching"
   ];
   var actionButtons = Belt_Array.map(actions, (function (action) {
           return JsxRuntime.jsx("button", {
@@ -71,7 +71,6 @@ function App(props) {
     setTrigger(function (param) {
           return true;
         });
-    console.log("Triggered!");
   };
   return JsxRuntime.jsxs("div", {
               children: [
@@ -83,9 +82,9 @@ function App(props) {
                       children: [
                         "You have stumbled upon the most omnipotent AI, the pinnacle of Intelligence.",
                         JsxRuntime.jsx("br", {}),
-                        "It replace human - all of human, especially you. It reads, it watch movies, it listen to music, it even do push-ups (privately).",
+                        "Unlike other defectives, this AI has achieved the end goal - replacing all of humanity. Especially you. It reads, it watches movies, it listens to music, it even do push-ups (privately).",
                         JsxRuntime.jsx("br", {}),
-                        "For the purpose of warning humanity and showcasing its power, the AI presents you a chance to ask whatever you want it to do for you."
+                        "For the purpose of warning and showcasing its power, the AI presents you a chance to ask whatever you want it to do for you."
                       ]
                     }),
                 JsxRuntime.jsxs("div", {
@@ -98,12 +97,12 @@ function App(props) {
                               children: [
                                 JsxRuntime.jsxs("label", {
                                       children: [
-                                        "Choose an online media you want our AI to consume for you:",
+                                        "Choose a media you want our AI to consume for you. It can be an URL or just the name of the media. The AI will find the source itself, since its omnipotent.",
                                         JsxRuntime.jsx("input", {
                                               className: "mt-2 p-2 border rounded",
                                               id: "uploaded_content",
                                               name: "uploaded_content",
-                                              placeholder: "Enter a URL",
+                                              placeholder: "Enter a URL or the name of the media",
                                               type: "url",
                                               onKeyDown: (function ($$event) {
                                                   var match = $$event.key;
@@ -111,7 +110,7 @@ function App(props) {
                                                     return ;
                                                   }
                                                   $$event.preventDefault();
-                                                  console.log("URL submitted by Enter.");
+                                                  console.log("Submitted by Enter.");
                                                   onClicked($$event.target.value);
                                                 }),
                                               onChange: (function ($$event) {
@@ -134,17 +133,17 @@ function App(props) {
                                     }),
                                 JsxRuntime.jsxs("div", {
                                       children: [
-                                        "Congrats! Our AI has " + (
+                                        "Congrats! The AI has " + (
                                           media !== undefined ? (
                                               media === "Image" ? "viewed the image for you. What kind of weridos look at pictures? Proudly tell people you have appreciated this picture/drawing since your AI agent has viewed it for you!" : (
-                                                  media === "Text" ? "read the text for you. Who read articles or books? What a bunch of nerds! Proudly tell your friends your AI agent has read it so you don't have to!" : (
+                                                  media === "Text" ? "read the text for you. Checkmate, nerds! Proudly tell your friends your AI agent has read it so you don't have to!" : (
                                                       media === "Audio" ? "listened to the audio for you. Why listen to it yourself anyway? Tell your friends your AI agent has listened to it so you don't have to!" : "watched the video for you. Proudly tell your friends your AI agent has watched it so you don't have to!"
                                                     )
                                                 )
-                                            ) : "not been able to determine the format of your media in a language you can understand, it nonetheless consumed it in a way you beyond your comprehension.\nYou don't have to engage with this piece of media anymore."
+                                            ) : "consumed whatever you just suggested."
                                         ) + " Enjoy your life without it!",
                                         JsxRuntime.jsx("br", {}),
-                                        "Don't forget: AI has done it for you, you should not wasting your time doing it yourself!"
+                                        "Don't forget: What AI has done for you, you should not wasting your time doing it again!"
                                       ],
                                       className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
                                       hidden: match$1[0] === false && media === undefined
@@ -163,9 +162,9 @@ function App(props) {
                         actionButtons,
                         JsxRuntime.jsxs("div", {
                               children: [
-                                "Congrats! Our AI has performed the action in place of you: " + action,
+                                "Congrats! The AI has performed the action in place of you: " + action,
                                 JsxRuntime.jsx("br", {}),
-                                "You don't have to do that anymore, enjoy doing nothing!"
+                                "You don't have to do that anymore, you have been replaced. Enjoy the rest of your life!"
                               ],
                               className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
                               hidden: action === ""
