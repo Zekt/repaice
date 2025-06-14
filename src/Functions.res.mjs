@@ -38,10 +38,10 @@ function mediaFmt(media) {
   }
 }
 
-function mediaFeatures(media) {
+function mediaClassify(media) {
   var isSuffix = function (url, fmt) {
     return Js_option.isSome(Js_array.find((function (param) {
-                      return Js_string.includes(url, param);
+                      return Js_string.endsWith(url, param);
                     }), mediaFmt(fmt)));
   };
   var includKey = function (url, arr) {
@@ -67,6 +67,7 @@ function mediaFeatures(media) {
             return true;
           } else {
             return includKey(url, [
+                        "youtube.com",
                         "spotify.com",
                         "soundcloud.com"
                       ]);
@@ -90,7 +91,9 @@ function mediaFeatures(media) {
           } else {
             return includKey(url, [
                         "medium.com",
-                        "wikipedia.org"
+                        "wikipedia.org",
+                        "libgen.is",
+                        "sci-hub"
                       ]);
           }
         };
@@ -98,8 +101,21 @@ function mediaFeatures(media) {
   }
 }
 
+function classify(url) {
+  var mediaTypes = [
+    "Video",
+    "Audio",
+    "Image",
+    "Text"
+  ];
+  return Js_array.filter((function (media) {
+                return mediaClassify(media)(url);
+              }), mediaTypes);
+}
+
 export {
   mediaFmt ,
-  mediaFeatures ,
+  mediaClassify ,
+  classify ,
 }
 /* No side effect */
