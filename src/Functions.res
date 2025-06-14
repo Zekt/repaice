@@ -23,23 +23,23 @@ let mediaFmt = (media: lower_media): array<string> => {
   }
 }
 
-let mediaClassify = (media: lower_media): (string => bool) => {
-    let isSuffix  = (url, fmt) => Js.Option.isSome(Js.Array.find((url->Js.String.endsWith), mediaFmt(fmt)))
-    let includKey = (url, arr) => Js.Option.isSome(Js.Array.find((url->Js.String.includes), arr))
-    switch media {
-    | #Video => url => isSuffix(url, #Video) || includKey(url, ["youtube.com", "vimeo.com"])
-    | #Audio => url => isSuffix(url, #Audio) || includKey(url, ["spotify.com", "soundcloud.com"])
-    | #Image => url => isSuffix(url, #Image) || includKey(url, ["imgur.com", "flickr.com"])
-    | #Text  => url => isSuffix(url, #Text)  || includKey(url, ["medium.com", "wikipedia.org", "libgen.is", "sci-hub"])
+let mediaClassify = (media: lower_media, url: string): bool => {
+    if url != "" {
+      let isSuffix  = (url, fmt) => Js.Array.some((url->Js.String.endsWith), mediaFmt(fmt))
+      let includKey = (url, arr) => Js.Array.some((i) => i == true, arr->Array.map((key) => Js.String.includes(url, key)))
+      // let includKey = (url, arr) => Js.Option.isSome(Js.Array.find((url->Js.String.includes), arr))
+      switch media {
+      | #Video => isSuffix(url, #Video) || includKey(url, ["youtube.com", "vimeo.com"])
+      | #Audio => isSuffix(url, #Audio) || includKey(url, ["spotify.com", "soundcloud.com"])
+      | #Image => isSuffix(url, #Image) || includKey(url, ["imgur.com", "flickr.com"])
+      | #Text  => isSuffix(url, #Text)  || includKey(url, ["medium.com", "wikipedia.org", "libgen.is", "sci-hub"])
+      }
+    } else {
+      false
     }
 }
 
-let classify = (url: string): option<array<lower_media>> => {
+let classify = (url: string): array<lower_media> => {
     let mediaTypes = [#Video, #Audio, #Image, #Text]
-    let medias = Js.Array.filter(media => mediaClassify(media)(url), mediaTypes)
-    if (Js.Array.length(medias) > 0) {
-      Some(medias)
-    } else {
-      None
-    }
+    mediaTypes->Array.filter((media) => mediaClassify(media, url))
 }

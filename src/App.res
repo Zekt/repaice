@@ -2,6 +2,7 @@
 @react.component
 let make = () => {
   let (url, setURL) = React.useState(_ => "")
+  let (trigger, setTrigger) = React.useState(_ => false)
   let (media, setMedia) = React.useState(_ => None)
   let (action, setAction) = React.useState(_ => "")
   let actions = [
@@ -15,7 +16,6 @@ let make = () => {
       onClick={_ => {
       setAction(_ => action)
       Js.log("Action performed: " ++ action)
-      ()
       }}
       type_=""
       className="mt-3 p-2 bg-blue-500 text-white rounded mr-2">
@@ -23,26 +23,17 @@ let make = () => {
     </button>
   ))
 
-  let onClicked = (_ => {
+  let onClicked = (url => {
     let mToString = (arr) => Belt.Array.joinWith(arr, ", ", (m) => (m :> string))
     switch Functions.classify(url) {
-    | None => Js.log("No media types found for the URL.")
-              setMedia(_ => None)
-    | Some(arr) => let medias = mToString(Array.map(arr, Functions.showMedia))
-                   Js.log("Media types found for the URL:" ++ medias)
-                   setMedia(_ => arr[0])
+    | []  => Js.log("No media types found for the URL.")
+             setMedia(_ => None)
+    | arr => let medias = mToString(Array.map(arr, Functions.showMedia))
+                 Js.log("Media types found for the URL:" ++ medias)
+                 setMedia(_ => arr[0])
     }
-  })
-
-  let onAction = (e => {
-    ReactEvent.Mouse.preventDefault(e)
-    Js.log(e->JsxEvent.Mouse.target)
-    // let actionText = switch e->JsxEvent.Mouse.target {
-    // | Some(text) => text
-    // | None => "No Action"
-    // }
-    // Js.log("Action performed: " ++ actionText)
-    // setAction(_ => actionText)
+    setTrigger(_ => true)
+    Js.log("Triggered!")
   })
 
   <div className="p-6">
@@ -79,23 +70,27 @@ let make = () => {
         <button
           onClick={(e) => {
             ReactEvent.Mouse.preventDefault(e)
-            onClicked(e)
+            onClicked(url)
           }}
           type_="" className="mt-1 p-2 bg-blue-500 text-white rounded">
           {React.string("Upload")}
         </button>
-        <div hidden={media == None ? true : false} className="mt-1 p-2 bg-green-100 text-green-800 rounded">
-          // {React.string(`The format of your chosen media seems to be a piece of ${media}`)} <br/>
-          {React.string("Congrats! Our AI has "
-                     ++ {switch media {
-                      | Some(#Video) => "watched it for you. Why watch it yourself when you can watch AI-dubbed 5 minute cut on Youtube or TikTok? Now you don't even need those fakers anymore. Proudly tell people your AI agent has watched it so you don't have to!"
-                      | Some(#Audio) => "listened to it for you. Why listen to it yourself anyway? Tell people your AI agent has listened to it for you!"
-                      | Some(#Text)  => "read it for you. Who read articles nowadays? Or even worse...books! What a bunch of nerds! Proudly tell people your AI agent has read it so you don't have to!"
-                      | Some(#Image) => "viewed it for you. Who kind of werido look at pictures? It's probably AI-generated anyway. Proudly tell people you have seem this picture since your AI agent has viewed it!"
-                      | None => "not distinguished the format of your chosen media. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
-                     }}
-                     ++ " Enjoy your life without it!")}
+        <div hidden={trigger == false && media == None ? true : false} className="mt-1 p-2 bg-green-100 text-green-800 rounded">
+          {url != "" ? React.string("Congrats! Our AI has "
+                                    ++ {switch media {
+                                     | Some(#Video) => "watched the video for you. Why watch a video or a movie when you can watch an AI-dubbed 1 minute cut on Youtube or TikTok? Why watch those slops when AI can watch it for you? Proudly tell people your AI agent has watched it so you don't have to!"
+                                     | Some(#Audio) => "listened to the audio for you. Why listen to it yourself anyway? Tell people your AI agent has listened to it so you don't have to!"
+                                     | Some(#Text)  => "read the text for you. Who read articles nowadays? Or even worse...books! What a bunch of nerds! Proudly tell people your AI agent has read it so you don't have to!"
+                                     | Some(#Image) => "viewed the image for you. What kind of werido look at pictures? It's probably AI-generated anyways. Proudly tell people you have appreciated this picture/drawing since your AI agent has viewed it for you!"
+                                     | None => "not been able to describe the format of your chosen media in a language you can understand. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
+                                    }}
+                                    ++ " Enjoy your life without it!")
+                                    : React.string("Please enter a URL to upload media.")}
         </div>
+//         <div hidden={trigger == false || media != None ? true : false} className="mt-1 p-2 bg-green-100 text-green-800 rounded">
+//           {React.string("Our AI cannot describe the format of your chosen media in a language you can understand. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
+// )}
+//         </div>
       </form>
     </div>
     <div className="mt-5">

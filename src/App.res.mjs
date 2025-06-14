@@ -15,15 +15,19 @@ function App(props) {
   var setURL = match[1];
   var url = match[0];
   var match$1 = React.useState(function () {
+        return false;
+      });
+  var setTrigger = match$1[1];
+  var match$2 = React.useState(function () {
         
       });
-  var setMedia = match$1[1];
-  var media = match$1[0];
-  var match$2 = React.useState(function () {
+  var setMedia = match$2[1];
+  var media = match$2[0];
+  var match$3 = React.useState(function () {
         return "";
       });
-  var setAction = match$2[1];
-  var action = match$2[0];
+  var setAction = match$3[1];
+  var action = match$3[0];
   var actions = [
     "Drink a coffee",
     "Take a nap",
@@ -43,22 +47,27 @@ function App(props) {
                         })
                     });
         }));
-  var onClicked = function (param) {
+  var onClicked = function (url) {
     var arr = Functions.classify(url);
-    if (arr !== undefined) {
+    if (arr.length !== 0) {
       var arr$1 = arr.map(Functions.showMedia);
       var medias = Belt_Array.joinWith(arr$1, ", ", (function (m) {
               return m;
             }));
       console.log("Media types found for the URL:" + medias);
-      return setMedia(function (param) {
-                  return arr[0];
-                });
+      setMedia(function (param) {
+            return arr[0];
+          });
+    } else {
+      console.log("No media types found for the URL.");
+      setMedia(function (param) {
+            
+          });
     }
-    console.log("No media types found for the URL.");
-    setMedia(function (param) {
-          
+    setTrigger(function (param) {
+          return true;
         });
+    console.log("Triggered!");
   };
   return JsxRuntime.jsxs("div", {
               children: [
@@ -107,25 +116,21 @@ function App(props) {
                                       type: "",
                                       onClick: (function (e) {
                                           e.preventDefault();
-                                          onClicked(e);
+                                          onClicked(url);
                                         })
                                     }),
                                 JsxRuntime.jsx("div", {
-                                      children: "Congrats! Our AI has " + (
-                                        media !== undefined ? (
-                                            media === "Image" ? "viewed it for you. Who kind of werido look at pictures? It's probably AI-generated anyway. Proudly tell people you have seem this picture since your AI agent has viewed it!" : (
-                                                media === "Text" ? "read it for you. Who read articles nowadays? Or even worse...books! What a bunch of nerds! Proudly tell people your AI agent has read it so you don't have to!" : (
-                                                    media === "Audio" ? "listened to it for you. Why listen to it yourself anyway? Tell people your AI agent has listened to it for you!" : "watched it for you. Why watch it yourself when you can watch AI-dubbed 5 minute cut on Youtube or TikTok? Now you don't even need those fakers anymore. Proudly tell people your AI agent has watched it so you don't have to!"
-                                                  )
-                                              )
-                                          ) : "not distinguished the format of your chosen media. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
-                                      ) + " Enjoy your life without it!",
+                                      children: url !== "" ? "Congrats! Our AI has " + (
+                                          media !== undefined ? (
+                                              media === "Image" ? "viewed the image for you. What kind of werido look at pictures? It's probably AI-generated anyways. Proudly tell people you have appreciated this picture/drawing since your AI agent has viewed it for you!" : (
+                                                  media === "Text" ? "read the text for you. Who read articles nowadays? Or even worse...books! What a bunch of nerds! Proudly tell people your AI agent has read it so you don't have to!" : (
+                                                      media === "Audio" ? "listened to the audio for you. Why listen to it yourself anyway? Tell people your AI agent has listened to it so you don't have to!" : "watched the video for you. Why watch a video or a movie when you can watch an AI-dubbed 1 minute cut on Youtube or TikTok? Why watch those slops when AI can watch it for you? Proudly tell people your AI agent has watched it so you don't have to!"
+                                                    )
+                                                )
+                                            ) : "not been able to describe the format of your chosen media in a language you can understand. But fear not! With its superintellgence beyound human comprehension, Our AI has nonetheless consumed it in a way you cannot even fathom.\nYou don't have to engage with this piece of media anymore."
+                                        ) + " Enjoy your life without it!" : "Please enter a URL to upload media.",
                                       className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
-                                      hidden: media === undefined
-                                    }),
-                                JsxRuntime.jsx("div", {
-                                      className: "mt-1 p-2 bg-green-100 text-green-800 rounded",
-                                      hidden: media !== undefined
+                                      hidden: match$1[0] === false && media === undefined
                                     })
                               ]
                             })
